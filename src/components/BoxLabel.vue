@@ -1,5 +1,6 @@
 <template>
   <div class="box-wrapper">
+    <!-- The label for the box annotation -->
     <div
       class="label"
       v-if="bLabel"
@@ -11,29 +12,33 @@
     >
       {{ bLabel }}
     </div>
-    <a
+    <!-- A button to delete the box label -->
+    <q-btn
+      round
       class="box-delete"
-      v-on:click="removeMyself"
+      @click.prevent="removeMyself"
       v-if="bActive"
       :style="{
-        top: bTop - 18 + 'px',
-        left: bLeft + bWidth + 'px',
+        top: bTop - 20 + 'px',
+        left: bLeft + bWidth + 5 + 'px',
       }"
-    >
-      x
-    </a>
+      color="red"
+      >X
+    </q-btn>
+    <!-- Display the box -->
     <div
       class="box"
       :style="{
-        position: 'absolute',
+        position: `absolute`,
         top: `${bTop}px`,
         left: `${bLeft}px`,
         width: `${bWidth}px`,
         height: `${bHeight}px`,
       }"
       v-bind:class="{ active: bActive }"
-      @mousedown="selectBox"
+      @mousedown.prevent="selectBox"
     >
+      <!-- Display the box lines with proper cursors -->
       <div class="box-line box-top-line"></div>
       <div class="box-line box-right-line"></div>
       <div class="box-line box-left-line"></div>
@@ -63,9 +68,11 @@ export default {
   ],
   methods: {
     selectBox() {
+      // Selects the clicked on box
       this.onSelect(this.bIndex);
     },
     removeMyself() {
+      // Removes the box from the array
       this.onDelete(this.bIndex);
     },
   },
@@ -74,15 +81,13 @@ export default {
 
 <style lang="scss" scoped>
 .box {
-  position: absolute;
-  // border: 2px rgba(43, 55, 210, 0.8) solid;
+  position: absolute !important;
+  cursor: pointer;
 
   &:hover {
-    // border: 2px rgba(43, 55, 210, 0.8) solid;
     background-color: rgba(88, 96, 213, 0.2);
   }
   &.active {
-    // border: 2px rgba(105, 34, 176, 0.8) solid;
     background-color: rgba(207, 66, 242, 0.2);
   }
 
@@ -92,68 +97,67 @@ export default {
   position: absolute;
   transition: all 0.25s;
 }
-.box:hover .box-line {
-  background-color: rgba(88, 96, 213, 0.2);
-}
 .box .box-top-line {
   top: 0;
   left: 0;
   right: 0;
-  height: 5px; /* 5px for the mouse cursor update size */
+  height: 15px;
   border-top: 2px rgba(43, 55, 210, 0.8) solid;
+  transition: all 0.3s;
   cursor: n-resize;
 }
 .box .box-bottom-line {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 5px; /* 5px for the mouse cursor update size */
+  height: 15px;
   border-bottom: 2px rgba(43, 55, 210, 0.8) solid;
+  transition: all 0.3s;
   cursor: s-resize;
 }
 .box .box-left-line {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 5px; /* 5px for the mouse cursor update size */
+  width: 15px;
   border-left: 2px rgba(43, 55, 210, 0.8) solid;
+  transition: all 0.3s;
   cursor: w-resize;
 }
 .box .box-right-line {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 5px;
+  width: 15px;
   border-right: 2px rgba(43, 55, 210, 0.8) solid;
+  transition: all 0.3s;
   cursor: e-resize;
 }
 .box .box-corner {
   position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 2px;
-  border: 1px solid #808080;
+  width: 10px;
+  height: 10px;
   opacity: 0;
-  transition: all 0.25s;
+  transition: all 0.3s;
 }
 .box .box-top-left-corner {
-  top: -3px;
-  left: -3px;
+  top: 1px;
+  left: 1px;
   cursor: nw-resize;
 }
 .box .box-top-right-corner {
-  top: -3px;
-  right: -3px;
+  top: 1px;
+  right: 1px;
   cursor: ne-resize;
 }
 .box .box-bottom-left-corner {
-  bottom: -3px;
-  left: -3px;
+  bottom: 1px;
+  left: 1px;
   cursor: sw-resize;
 }
 .box .box-bottom-right-corner {
-  bottom: -3px;
-  right: -3px;
+  bottom: 1px;
+  right: 1px;
   cursor: se-resize;
 }
 .box:hover .box-corner {
@@ -174,7 +178,13 @@ export default {
   font-weight: bold;
   color: rgb(146, 7, 7);
   cursor: pointer;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
+  height: 15px;
+  width: 15px;
+}
+.box-delete:hover {
+  color: rgb(213, 12, 12);
+  transition: all 0.3;
 }
 </style>
