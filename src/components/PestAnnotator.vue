@@ -16,6 +16,7 @@
               <!-- Active box label -->
               <BoxLabel
                 v-if="drawingBox.active"
+                :b-label="drawingBox.label"
                 :b-width="drawingBox.width"
                 :b-height="drawingBox.height"
                 :b-top="drawingBox.top"
@@ -138,6 +139,7 @@ export default {
         left: 0,
         height: 0,
         width: 0,
+        label: "",
       },
       boxes: [],
       pest_images: [
@@ -174,6 +176,7 @@ export default {
           top: TOP,
           left: LEFT,
           active: true,
+          label: "",
         };
       } else {
         // Expand existing box
@@ -183,6 +186,7 @@ export default {
           height: this.boxes[EXISTING_BOX].height,
           top: this.boxes[EXISTING_BOX].top,
           left: this.boxes[EXISTING_BOX].left,
+          label: this.boxes[EXISTING_BOX].label,
           active: true,
         };
       }
@@ -203,9 +207,6 @@ export default {
           let newWidth = OLD_WIDTH;
           let newTop = OLD_TOP;
           let newLeft = OLD_LEFT;
-          console.log(LEFT);
-          console.log(OLD_LEFT);
-          console.log(OLD_WIDTH);
 
           // We are resizing an existing box, check for direction and update accordingly
           if (LEFT < OLD_LEFT && LEFT > 0 && OLD_LEFT - LEFT + OLD_WIDTH > 0) {
@@ -268,10 +269,11 @@ export default {
                 top: newTop,
                 width: newWidth,
                 height: newHeight,
+                label: box.label,
               };
             }
             newBoxes.push({
-              ...pick(box, ["width", "height", "top", "left"]),
+              ...pick(box, ["width", "height", "top", "left", "label"]),
             });
             return box;
           });
@@ -294,7 +296,13 @@ export default {
           if (!this.drawingBox.resize) {
             // Only add if the box doesn't exist
             this.boxes.push({
-              ...pick(this.drawingBox, ["width", "height", "top", "left"]),
+              ...pick(this.drawingBox, [
+                "width",
+                "height",
+                "top",
+                "left",
+                "label",
+              ]),
             });
           }
         }
@@ -307,6 +315,7 @@ export default {
           left: 0,
           height: 0,
           width: 0,
+          label: "",
         };
       }
     },
